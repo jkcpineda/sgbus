@@ -11,6 +11,10 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="index.html" />
+    <None Include="assets\common.css" />
+    <None Include="assets\common.js" />
+    <None Include="assets\jquery.js" />
+    <None Include="assets\moment.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
