@@ -15,6 +15,7 @@
     <None Include="assets\common.js" />
     <None Include="assets\jquery.js" />
     <None Include="assets\moment.min.js" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
