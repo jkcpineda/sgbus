@@ -1,74 +1,71 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Clock</title>
-        <script src="assets/jquery.js"></script>
-        <script src="assets/moment.min.js"></script>
+<head>
+    <title>Clock</title>
+    <script src="assets/jquery.js"></script>
+    <script src="assets/moment.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+</head>
+<style class="cp-pen-styles">
+    @import url(http://fonts.googleapis.com/css?family=Pathway+Gothic+One);
+    body {
+        font-family: "Times New Roman", Times, serif;
+        background-color: black;
+        color: white;
+    }
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <meta charset="utf-8">
-    </head>
-    <style class="cp-pen-styles">
-        @import url(http://fonts.googleapis.com/css?family=Pathway+Gothic+One);
-        body {
-            font-family: "Times New Roman", Times, serif;
-            background-color: black;
-            color: white;
-        }
+    #time-now {
+        font-size: 4.5vw;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
 
-        #time-now {
-            font-size: 20vw;
-            padding-bottom: 0;
-            margin-bottom: 0;
-        }
+    #date-now {
+        font-size: 4.5vw;
+        text-transform: uppercase
+    }
 
-        #date-now {
-            font-size: 4.5vw;
-            text-transform: uppercase
-        }
+    #bus-wt {
+        font-size: 9vw
+    }
 
-        #bus-wt {
-            font-size: 2vw
-        }
-
-    </style>
-    <body>
-        <table>
-            <tr>
-                <td><span id="am-pm"></span></td>yelloow
-                <td id="time-now"><span id="hour-now"></span><span id="colon-separator">:</span><span id="minute-now"></span></td>
-                <td><span id="seconds-now"></span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td id="date-now" style="text-align: center"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <table id="bus-wt" style="width: 100%">
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                <a href="javascript:window.open('','_self').close();">close</a></td>
-            </tr>
-        </table>
-        <div style="display: none">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- simple-ad -->
-            <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-4019314381981428"
-            data-ad-slot="2679180378"
-            data-ad-format="auto"></ins>
-            <script>
-                ( adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    </body>
-    <script>
+</style>
+<body>
+    <table>
+        <tr>
+            <td></td>
+            <td style="text-align: center">
+                <span id="date-now"></span>
+                <span id="time-now">
+                    <span id="hour-now"></span><span id="colon-separator">:</span><span id="minute-now"></span>
+                    <span id="am-pm"></span>
+                    <span id="seconds-now"></span>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <h3>AFT Telok Blangah St 32</h3>
+                <table id="bus-wt-aft" style="width: 100%"></table>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <h3>BEFORE Telok Blangah St 32</h3>
+                <table id="bus-wt-bef" style="width: 100%"></table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="javascript:window.open('','_self').close();">close</a>
+            </td>
+        </tr>
+    </table>
+</body>
+<script>
         updateTime();
         setInterval(updateTime, 1000);
 
@@ -88,13 +85,26 @@
 
         function updateBusWt() {
 
-            $.get( "https://arrivelah.herokuapp.com/?id=14039", function( data ) {
+            $.get( "https://arrivelah.herokuapp.com/?id=14331", function( data ) {
 
-                $('#bus-wt').html("");
+                $('#bus-wt-aft').html("");
 
                     for (var idx in data.services) {
                       var busInfo = data.services[idx];
-                       $('#bus-wt').append('<tr><td>' + busInfo.no + '</td><td>'
+                       $('#bus-wt-aft').append('<tr><td>' + busInfo.no + '</td><td>'
+                            + toReadableWaitingTime(busInfo.next.duration_ms) + '</td><td>'
+                            + toReadableWaitingTime(busInfo.next2.duration_ms) + '</td><td>'
+                            + toReadableWaitingTime(busInfo.next3.duration_ms) + '</td></tr>');
+                }
+            });
+
+            $.get( "https://arrivelah.herokuapp.com/?id=14339", function( data ) {
+
+                $('#bus-wt-bef').html("");
+
+                    for (var idx in data.services) {
+                      var busInfo = data.services[idx];
+                       $('#bus-wt-bef').append('<tr><td>' + busInfo.no + '</td><td>'
                             + toReadableWaitingTime(busInfo.next.duration_ms) + '</td><td>'
                             + toReadableWaitingTime(busInfo.next2.duration_ms) + '</td><td>'
                             + toReadableWaitingTime(busInfo.next3.duration_ms) + '</td></tr>');
@@ -105,8 +115,9 @@
 
         function toReadableWaitingTime(msTime) {
 
+            if (msTime == null) return null;
             time = Math.floor(msTime / 60000)
-            return time > 0 ? time + " min" : "Arr";
+            return time > 0 ? time + "<span style='font-size: 3vw'>min</span>" : "Arr";
         }
 
         function closeWindow() {
@@ -114,5 +125,5 @@
                 window.close();
             }
         }
-    </script>
+</script>
 </html>
