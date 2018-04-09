@@ -11,8 +11,8 @@
     @import url(http://fonts.googleapis.com/css?family=Pathway+Gothic+One);
     body {
         font-family: "Arial Black", Gadget, sans-serif;
-        background-color: black;
-        color: white;
+        background-color: #6579a3;
+        color: black;
     }
 
     #time-now {
@@ -28,19 +28,37 @@
 
     #bus-wt-bef, #bus-wt-aft {
         font-size: 9vw;
-        color: green
+        color: white
     }
 
     .bus-stop-name {
         font-weight: bold
     }
 
+    .time1 {
+        font-size: 2vw;
+        color: yellow;
+    }
+
+    .time2 {
+        font-size: 1.5vw;
+        height:40px;
+        color: yellowgreen
+    }
+
+    .time-box{
+        width: 10vw;
+    }
+
+    .bus-no{
+        width: 20vw;
+    }
+
 </style>
 <body>
     <table>
         <tr>
-            <td></td>
-            <td style="text-align: center">
+            <td style="text-align: center" colspan="2">
                 <span id="date-now"></span>
                 <span id="time-now">
                     <span id="hour-now"></span><span id="colon-separator">:</span><span id="minute-now"></span>
@@ -50,24 +68,19 @@
             </td>
         </tr>
         <tr>
-            <td></td>
             <td>
                 <div class="bus-stop-name">AFT Telok Blangah St 32</div>
                 <table id="bus-wt-aft" style="width: 100%"></table>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
+
             <td>
                 <div class="bus-stop-name">BEFORE Telok Blangah St 32</div>
                 <table id="bus-wt-bef" style="width: 100%"></table>
             </td>
-        </tr>
         <tr>
             <td>
                 <a href="javascript:location.reload();">refresh</a>
             </td>
-            <td>
+            <td style="text-align: right">
                 <a href="javascript:window.open('','_self').close();">close</a>
             </td>
         </tr>
@@ -78,7 +91,7 @@
         setInterval(updateTime, 1000);
 
         updateBusWt();
-        setInterval(updateBusWt, 15000);
+        setInterval(updateBusWt, 1500000);
 
         function updateTime() {
             var time = moment(new Date());
@@ -93,29 +106,30 @@
 
         function updateBusWt() {
 
-            $.get( "https://arrivelah.herokuapp.com/?id=14331", function( data ) {
+            $.get( "https://arrivelah.herokuapp.com/?id=02061", function( data ) {
 
                 $('#bus-wt-aft').html("");
 
                     for (var idx in data.services) {
                       var busInfo = data.services[idx];
-                       $('#bus-wt-aft').append('<tr><td>' + busInfo.no + '</td><td>'
-                            + toReadableWaitingTime(busInfo.next.duration_ms) + '</td><td>'
-                            + toReadableWaitingTime(busInfo.next2.duration_ms) + '</td><td>'
-                            + toReadableWaitingTime(busInfo.next3.duration_ms) + '</td></tr>');
+                       $('#bus-wt-aft').append('<tr><td class="bus-no">' + busInfo.no + '</td><td><table class="time-box"><tr><td class="time1">'
+                            + toReadableWaitingTime(busInfo.next.duration_ms) + '</td></tr><tr><td class="time2">'
+                            + toReadableWaitingTime(busInfo.next2.duration_ms) + '</td></tr><tr><td class="time2">'
+                            + toReadableWaitingTime(busInfo.next3.duration_ms) + '</td></tr></table></td></tr>');
                 }
+                $('#bus-wt-aft').append('<tr></tr>');
             });
 
-            $.get( "https://arrivelah.herokuapp.com/?id=14339", function( data ) {
+            $.get( "https://arrivelah.herokuapp.com/?id=02061", function( data ) {
 
                 $('#bus-wt-bef').html("");
 
                     for (var idx in data.services) {
                       var busInfo = data.services[idx];
-                       $('#bus-wt-bef').append('<tr><td>' + busInfo.no + '</td><td>'
-                            + toReadableWaitingTime(busInfo.next.duration_ms) + '</td><td>'
-                            + toReadableWaitingTime(busInfo.next2.duration_ms) + '</td><td>'
-                            + toReadableWaitingTime(busInfo.next3.duration_ms) + '</td></tr>');
+                       $('#bus-wt-bef').append('<tr><td class="bus-no">' + busInfo.no + '</td><td><table class="time-box"><tr><td class="time1">'
+                            + toReadableWaitingTime(busInfo.next.duration_ms) + '</td></tr><tr><td class="time2">'
+                            + toReadableWaitingTime(busInfo.next2.duration_ms) + '</td></tr><tr><td class="time2">'
+                            + toReadableWaitingTime(busInfo.next3.duration_ms) + '</td></tr></table></td></tr>');
                 }
             });
 
@@ -125,7 +139,7 @@
 
             if (msTime == null) return null;
             time = Math.floor(msTime / 60000)
-            return time > 0 ? time + "<span style='font-size: 3vw'>min</span>" : "Arr";
+            return time > 0 ? time + "<span style='font-size: 1vw'>min</span>" : "Arr";
         }
 
         function closeWindow() {
