@@ -27,21 +27,22 @@
     }
 
     #bus-wt-bef, #bus-wt-aft {
-        font-size: 9vw;
+        font-size: 5vw;
         color: white
     }
 
     .bus-stop-name {
+        font-size: 1.5vw;
         font-weight: bold
     }
 
     .time1 {
-        font-size: 2vw;
+        font-size: 3vw;
         color: yellow;
     }
 
     .time2 {
-        font-size: 1.5vw;
+        font-size: 3vw;
         height:40px;
         color: yellowgreen
     }
@@ -52,7 +53,15 @@
 
     .bus-no{
         width: 20vw;
-        color: black;
+    }
+
+    .bus-no {
+        border-right: solid 1px black;
+        border-top: solid 1px black;
+    }
+
+    .time-box td{
+        border-bottom: solid 1px black;
     }
 
 </style>
@@ -107,7 +116,7 @@
 
         function updateBusWt() {
 
-            $.get( "https://arrivelah.herokuapp.com/?id=02061", function( data ) {
+            $.get( "https://arrivelah.herokuapp.com/?id=14331", function( data ) {
 
                 $('#bus-wt-aft').html("");
 
@@ -121,7 +130,7 @@
                 $('#bus-wt-aft').append('<tr></tr>');
             });
 
-            $.get( "https://arrivelah.herokuapp.com/?id=02061", function( data ) {
+            $.get( "https://arrivelah.herokuapp.com/?id=14339", function( data ) {
 
                 $('#bus-wt-bef').html("");
 
